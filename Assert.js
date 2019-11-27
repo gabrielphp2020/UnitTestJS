@@ -1,5 +1,6 @@
 window.Import(window._ROOTUTILS+"ArrayUtils.js");
 
+window.Import(window._ROOTUTILS+"ReflectionUtils.js");
 
 
 class Assert{
@@ -31,8 +32,8 @@ Assert._methods=methods;
 static get OnObsolete(){
 if(!Assert._obsolete)
 {
-Assert._obsolete=(class,func)=>{
-console.error("function to test not found\""+class+"."+func+"\"");
+Assert._obsolete=(clase,func)=>{
+console.error("function to test not found\""+clase+"."+func+"\"");
 };
 }
 return Assert._obsolete;
@@ -47,8 +48,8 @@ Assert._obsolete=onObsolete;
 static get OnError(){
 if(!Assert._error)
 {
-Assert._error=(class,func,error,posTest)=>{
-console.error("function to test error \""+class+"."+func+"\" posTest="+posTest);
+Assert._error=(clase,func,error,posTest)=>{
+console.error("function to test error \""+clase+"."+func+"\" posTest="+posTest);
 console.error(error);
 };
 }
@@ -64,8 +65,8 @@ Assert._error=onError;
 static get OnSuccess(){
 if(!Assert._success)
 {
-Assert._success=(class,func)=>{
-console.log("function to test success \""+class+"."+func+"\"");
+Assert._success=(clase,func,posTest)=>{
+console.log("function to test success \""+clase+"."+func+"\" testPos="+posTest);
 };
 }
 return Assert._success;
@@ -115,7 +116,7 @@ Promise.all(testingMethods).then(()=>{okey();});
 }
 
 
-static _ExecuteMethod(class,function, testMethod,position){
+static _ExecuteMethod(clase,function, testMethod,position){
 
 return new Promise((okey,error)=>{
 var aux=testMethod ();
@@ -124,11 +125,11 @@ aux.then(okey);
 else okey();
 
 }).then(()=>{
-Assert.OnSuccess(class,function, position);
+Assert.OnSuccess(clase,function, position);
 
 }).catch((error)=>{
 /*Trato error de ejecución*/
-Assert.OnError(class, function,error);
+Assert.OnError(clase, function,error,position);
 });
 
 
