@@ -66,7 +66,7 @@ static get OnSuccess(){
 if(!Assert._success)
 {
 Assert._success=(clase,func,posTest)=>{
-console.log("function to test success \""+clase+"."+func+"\" testPos="+posTest);
+console.log("function to test success \""+clase+"."+func+"\" posTest="+posTest);
 };
 }
 return Assert._success;
@@ -116,7 +116,7 @@ Promise.all(testingMethods).then(()=>{okey();});
 }
 
 
-static _ExecuteMethod(clase,function, testMethod,position){
+static _ExecuteMethod(clase,func, testMethod,position){
 
 return new Promise((okey,error)=>{
 var aux=testMethod ();
@@ -125,11 +125,11 @@ aux.then(okey);
 else okey();
 
 }).then(()=>{
-Assert.OnSuccess(clase,function, position);
+Assert.OnSuccess(clase,func, position);
 
 }).catch((error)=>{
 /*Trato error de ejecución*/
-Assert.OnError(clase, function,error,position);
+Assert.OnError(clase, func,error,position);
 });
 
 
