@@ -136,6 +136,7 @@ class Assert {
 
             var testingMethods = [];
             var testActual;
+            var method;
 
             for (var i = 0; i < Assert.Methods.length; i++) {
                 testActual = Assert.Methods[i];
@@ -149,7 +150,7 @@ class Assert {
                         /*No existe el metodo a testear*/
                         Assert.OnObsolete(testActual[CLASS], testActual[METHOD]);
                     } else {
-                        var method = new clase().constructor.name + "." + func;
+                        method = new testActual[CLASS]().constructor.name + "." + testActual[METHOD];
                         if (!Assert._dicObosolete)
                             Assert._dicObosolete = new Map();
                         if (!Assert._dicObosolete.has(method)) {
