@@ -1,5 +1,5 @@
-window.Import(window._ROOTUTILS + "ArrayUtils.js");
-window.Import(window._ROOTUTILS + "ReflectionUtils.js");
+window.Import(window._ROOTUTILS + "Utils/ArrayUtils.js");
+window.Import(window._ROOTUTILS + "Utils/ReflectionUtils.js");
 
 
 class Assert {
