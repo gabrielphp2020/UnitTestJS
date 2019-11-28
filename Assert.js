@@ -47,15 +47,16 @@ class Assert {
 
     static get OnError() {
         if (!Assert._error) {
-            Assert._error = (clase, func, error, posTest) => {
+            Assert._error = (clase, func, testMethod, error, posTest) => {
                 var final;
+                var name = Assert._GetFunctionName(testMethod);
                 if (name !== null) {
                     final = " TestMethod=" + name;
                 } else {
                     final = "\" posTest=" + posTest;
                     name = "nameLess";
                 }
-                console.error("function to test error \"" + clase + "." + name + final);
+                console.error("function to test error \"" + clase + "." + func + final);
                 console.error(error);
             };
         }
@@ -70,8 +71,8 @@ class Assert {
 
     static get OnSuccess() {
         if (!Assert._success) {
-            Assert._success = (clase, func, posTest) => {
-                var name = Assert._GetFunctionName(func);
+            Assert._success = (clase, func, testMethod, posTest) => {
+                var name = Assert._GetFunctionName(testMethod);
                 var final;
                 if (name !== null) {
                     final = " TestMethod=" + name;
@@ -79,7 +80,7 @@ class Assert {
                     final = "\" posTest=" + posTest;
                     name = "nameLess";
                 }
-                console.log("function to test success \"" + clase + "." + name + final);
+                console.log("function to test success \"" + clase + "." + func + final);
             };
         }
         return Assert._success;
@@ -139,11 +140,11 @@ class Assert {
             } catch (ex) { error(ex); }
 
         }).then(() => {
-            Assert.OnSuccess(clase, func, position);
+            Assert.OnSuccess(clase, func, testMethod, position);
 
         }).catch((error) => {
             /*Trato error de ejecución*/
-            Assert.OnError(clase, func, error, position);
+            Assert.OnError(clase, func, testMethod, error, position);
 
 
         });
