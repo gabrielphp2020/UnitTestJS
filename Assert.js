@@ -30,10 +30,8 @@ class Assert {
     static get OnObsolete() {
         if (!Assert._obsolete) {
             Assert._obsolete = (clase, func) => {
-                var name = Assert._GetFunctionName(func);
-                if (name === null)
-                    name = "nameLess";
-                console.error("function to test not found\"" + clase + "." + name + "\"");
+
+                console.error("function to test not found\"" + new clase().constructor.name + "." + func + "\"");
             };
         }
         return Assert._obsolete;
@@ -56,7 +54,7 @@ class Assert {
                     final = "\" posTest=" + posTest;
                     name = "nameLess";
                 }
-                console.error("function to test error \"" + clase + "." + func + final);
+                console.error("function to test error \"" + new clase().constructor.name + "." + func + final);
                 console.error(error);
             };
         }
@@ -80,7 +78,7 @@ class Assert {
                     final = "\" posTest=" + posTest;
                     name = "nameLess";
                 }
-                console.log("function to test success \"" + clase + "." + func + final);
+                console.log("function to test success \"" + new clase().constructor.name + "." + func + final);
             };
         }
         return Assert._success;
