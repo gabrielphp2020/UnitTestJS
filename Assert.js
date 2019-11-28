@@ -31,7 +31,7 @@ class Assert {
         if (!Assert._obsolete) {
             Assert._obsolete = (clase, func) => {
 
-                console.error("function to test not found\"" + new clase().constructor.name + "." + func + "\"");
+                console.error("function to test not found \"" + new clase().constructor.name + "." + func + "\"");
             };
         }
         return Assert._obsolete;
