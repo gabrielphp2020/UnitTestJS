@@ -91,7 +91,7 @@ class Assert {
     }
 
 
-    static Init() {
+    static Init(lstOutPut = undefined) {
         return new Promise((okey, error) => {
 
             const CLASS = 0;
@@ -106,11 +106,21 @@ class Assert {
 
                 /*Class,MethodToTest,TesterMethod*/
                 if (ReflectionUtils.ExistFunction(testActual[CLASS], testActual[METHOD])) {
-                    ArrayUtils.Add(testingMethods, Assert._ExecuteMethod(testActual[CLASS], testActual[METHOD], testActual[TESTMETHOD], i));
+                    ArrayUtils.Add(testingMethods, Assert._ExecuteMethod(lstOutPut, testActual[CLASS], testActual[METHOD], testActual[TESTMETHOD], i));
 
                 } else {
-                    /*No existe el metodo a testear*/
-                    Assert.OnObsolete(testActual[CLASS], testActual[METHOD]);
+                    if (lstOutPut === undefined) {
+                        /*No existe el metodo a testear*/
+                        Assert.OnObsolete(testActual[CLASS], testActual[METHOD]);
+                    } else {
+                        var method = new clase().constructor.name + "." + func;
+                        if (!Assert._dicObosolete)
+                            Assert._dicObosolete = new Map();
+                        if (!Assert._dicObosolete.has(method)) {
+                            winAssertdow._dicObosolete.set(method, method);
+                            lstOutPut.appendChild(Assert._GetAssertChildList(method, "obsolete"));
+                        }
+                    }
                 }
 
 
@@ -127,8 +137,8 @@ class Assert {
     }
 
 
-    static _ExecuteMethod(clase, func, testMethod, position) {
-
+    static _ExecuteMethod(lstOutPut, clase, func, testMethod, position) {
+        var method = new clase().constructor.name + "." + func;
         return new Promise((okey, error) => {
             try {
                 var aux = testMethod();
@@ -138,19 +148,33 @@ class Assert {
             } catch (ex) { error(ex); }
 
         }).then(() => {
-            Assert.OnSuccess(clase, func, testMethod, position);
+            if (lstOutPut === undefined) {
+                Assert.OnSuccess(clase, func, testMethod, position);
+            } else {
 
+                lstOutPut.appendChild(Assert._GetAssertChildList(method, "success", testMethod));
+            }
         }).catch((error) => {
-            /*Trato error de ejecución*/
-            Assert.OnError(clase, func, testMethod, error, position);
+            if (lstOutPut === undefined) {
+                /*Trato error de ejecución*/
+                Assert.OnError(clase, func, testMethod, error, position);
+            } else {
 
+                lstOutPut.appendChild(Assert._GetAssertChildList(method, "error", testMethod, error));
+            }
 
         });
 
 
 
     }
+    static _GetAssertChildList(nameMethod, classType, testMethod = "", error = "") {
 
+        var lstElement = document.createElement("li");
+        lstElement.setAttribute("class", classType);
+        lstElement.innerText = nameMethod + " " + ReflectionUtils.GetFunctionName(testMethod) + " " + error;
+        return lstElement;
+    }
 
 
 
