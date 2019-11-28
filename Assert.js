@@ -49,7 +49,7 @@ class Assert {
                 var final;
                 var name = Assert._GetFunctionName(testMethod);
                 if (name !== null) {
-                    final = " TestMethod=" + name;
+                    final = "\"  TestMethod=" + name;
                 } else {
                     final = "\" posTest=" + posTest;
                     name = "nameLess";
@@ -73,7 +73,7 @@ class Assert {
                 var name = Assert._GetFunctionName(testMethod);
                 var final;
                 if (name !== null) {
-                    final = " TestMethod=" + name;
+                    final = "\"  TestMethod=" + name;
                 } else {
                     final = "\" posTest=" + posTest;
                     name = "nameLess";
