@@ -27,6 +27,42 @@ class Assert {
 
 
     }
+    static get Obsolete() {
+        if (!Assert._successStyle) {
+            Assert._successStyle = "success";
+        }
+        return Assert._successStyle;
+
+    }
+    static set Success(success) {
+
+        Assert._successStyle = success;
+
+    }
+    static get Error() {
+        if (!Assert._errorStyle) {
+            Assert._errorStyle = "error";
+        }
+        return Assert._errorStyle;
+
+    }
+    static set Error(error) {
+
+        Assert._errorStyle = error;
+
+    }
+    static get Obsolete() {
+        if (!Assert._obsoleteStyle) {
+            Assert._obsoleteStyle = "obsolete";
+        }
+        return Assert._obsoleteStyle;
+
+    }
+    static set Obsolete(obsolete) {
+
+        Assert._obsoleteStyle = obsolete;
+
+    }
     static get OnObsolete() {
         if (!Assert._obsolete) {
             Assert._obsolete = (clase, func) => {
@@ -118,7 +154,7 @@ class Assert {
                             Assert._dicObosolete = new Map();
                         if (!Assert._dicObosolete.has(method)) {
                             winAssertdow._dicObosolete.set(method, method);
-                            lstOutPut.appendChild(Assert._GetAssertChildList(method, "obsolete"));
+                            lstOutPut.appendChild(Assert._GetAssertChildList(method, Assert.Obsolete));
                         }
                     }
                 }
@@ -152,7 +188,7 @@ class Assert {
                 Assert.OnSuccess(clase, func, testMethod, position);
             } else {
 
-                lstOutPut.appendChild(Assert._GetAssertChildList(method, "success", testMethod));
+                lstOutPut.appendChild(Assert._GetAssertChildList(method, Assert.Success, testMethod));
             }
         }).catch((error) => {
             if (lstOutPut === undefined) {
@@ -160,7 +196,7 @@ class Assert {
                 Assert.OnError(clase, func, testMethod, error, position);
             } else {
 
-                lstOutPut.appendChild(Assert._GetAssertChildList(method, "error", testMethod, error));
+                lstOutPut.appendChild(Assert._GetAssertChildList(method, Assert.Error, testMethod, error));
             }
 
         });
