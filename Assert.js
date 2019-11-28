@@ -47,8 +47,8 @@ class Assert {
         if (!Assert._error) {
             Assert._error = (clase, func, testMethod, error, posTest) => {
                 var final;
-                var name = Assert._GetFunctionName(testMethod);
-                if (name !== null) {
+                var name = ReflectionUtils.GetFunctionName(testMethod);
+                if (name !== '') {
                     final = "\"  TestMethod=" + name;
                 } else {
                     final = "\" posTest=" + posTest;
@@ -70,9 +70,9 @@ class Assert {
     static get OnSuccess() {
         if (!Assert._success) {
             Assert._success = (clase, func, testMethod, posTest) => {
-                var name = Assert._GetFunctionName(testMethod);
+                var name = ReflectionUtils.GetFunctionName(testMethod);
                 var final;
-                if (name !== null) {
+                if (name !== '') {
                     final = "\"  TestMethod=" + name;
                 } else {
                     final = "\" posTest=" + posTest;
@@ -152,20 +152,7 @@ class Assert {
     }
 
 
-    static _GetFunctionName(func) {
-        // Match:
-        // - ^          the beginning of the string
-        // - function   the word 'function'
-        // - \s+        at least some white space
-        // - ([\w\$]+)  capture one or more valid JavaScript identifier characters
-        // - \s*        optionally followed by white space (in theory there won't be any here,
-        //              so if performance is an issue this can be omitted[1]
-        // - \(         followed by an opening brace
-        //
-        var result = /^function\s+([\w\$]+)\s*\(/.exec(func.toString())
 
-        return result ? result[1] : null; // for an anonymous function there won't be a match
-    }
 
 
 
