@@ -30,7 +30,10 @@ class Assert {
     static get OnObsolete() {
         if (!Assert._obsolete) {
             Assert._obsolete = (clase, func) => {
-                console.error("function to test not found\"" + clase + "." + func + "\"");
+                var name = Assert._GetFunctionName(func);
+                if (name === null)
+                    name = "nameLess";
+                console.error("function to test not found\"" + clase + "." + name + "\"");
             };
         }
         return Assert._obsolete;
@@ -45,7 +48,14 @@ class Assert {
     static get OnError() {
         if (!Assert._error) {
             Assert._error = (clase, func, error, posTest) => {
-                console.error("function to test error \"" + clase + "." + func + "\" posTest=" + posTest);
+                var final;
+                if (name !== null) {
+                    final = " TestMethod=" + name;
+                } else {
+                    final = "\" posTest=" + posTest;
+                    name = "nameLess";
+                }
+                console.error("function to test error \"" + clase + "." + name + final);
                 console.error(error);
             };
         }
@@ -61,7 +71,15 @@ class Assert {
     static get OnSuccess() {
         if (!Assert._success) {
             Assert._success = (clase, func, posTest) => {
-                console.log("function to test success \"" + clase + "." + func + "\" posTest=" + posTest);
+                var name = Assert._GetFunctionName(func);
+                var final;
+                if (name !== null) {
+                    final = " TestMethod=" + name;
+                } else {
+                    final = "\" posTest=" + posTest;
+                    name = "nameLess";
+                }
+                console.log("function to test success \"" + clase + "." + name + final);
             };
         }
         return Assert._success;
@@ -135,7 +153,20 @@ class Assert {
     }
 
 
+    static _GetFunctionName(func) {
+        // Match:
+        // - ^          the beginning of the string
+        // - function   the word 'function'
+        // - \s+        at least some white space
+        // - ([\w\$]+)  capture one or more valid JavaScript identifier characters
+        // - \s*        optionally followed by white space (in theory there won't be any here,
+        //              so if performance is an issue this can be omitted[1]
+        // - \(         followed by an opening brace
+        //
+        var result = /^function\s+([\w\$]+)\s*\(/.exec(func.toString())
 
+        return result ? result[1] : null; // for an anonymous function there won't be a match
+    }
 
 
 
